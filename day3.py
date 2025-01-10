@@ -25,8 +25,28 @@ def compute_part_one(file_name: str) -> int:
 
 
 def compute_part_two(file_name: str) -> int:
-    content = read_input_file(file_name)
-    return "part 2 not yet implemented"
+    directions = {'<': (-1, 0), '>': (1, 0), '^': (0, -1), 'v': (0, 1)}
+
+    moves = read_input_file(file_name)
+    location_santa = (0, 0)
+    location_robo_santa = (0, 0)
+    locations = set()
+    locations.add(location_santa)
+
+    for pos in range(0, len(moves), 2):
+        x, y = location_santa
+        dx, dy = directions[moves[pos]]
+        location_santa = x + dx, y + dy
+        locations.add(location_santa)
+
+        x, y = location_robo_santa
+        dx, dy = directions[moves[pos + 1]]
+        location_robo_santa = x + dx, y + dy
+        locations.add(location_robo_santa)
+
+    number_of_visited_houses = len(locations)
+
+    return number_of_visited_houses
 
 
 if __name__ == '__main__':
