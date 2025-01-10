@@ -16,7 +16,17 @@ def compute_part_one(file_name: str) -> int:
 
 def compute_part_two(file_name: str) -> int:
     content = read_input_file(file_name)
-    return "part 2 not yet implemented"
+    position = 0
+    destination = 0
+    while destination != -1:
+        match content[position]:
+            case ')':
+                destination -= 1
+            case '(':
+                destination += 1
+        position += 1
+
+    return position
 
 
 if __name__ == '__main__':
