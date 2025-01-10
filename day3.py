@@ -33,14 +33,14 @@ def compute_part_two(file_name: str) -> int:
     locations = set()
     locations.add(location_santa)
 
-    for pos in range(0, len(moves), 2):
+    for position in range(0, len(moves), 2):
         x, y = location_santa
-        dx, dy = directions[moves[pos]]
+        dx, dy = directions[moves[position]]
         location_santa = x + dx, y + dy
         locations.add(location_santa)
 
         x, y = location_robo_santa
-        dx, dy = directions[moves[pos + 1]]
+        dx, dy = directions[moves[position + 1]]
         location_robo_santa = x + dx, y + dy
         locations.add(location_robo_santa)
 
