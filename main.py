@@ -1,37 +1,30 @@
-def calculate_wrapping_paper_and_ribbon(present_dimensions):
-    total_paper = 0
-    total_ribbon = 0
-
-    for dimensions in present_dimensions:
-        l, w, h = map(int, dimensions.split('x'))
-
-        # Calculate the surface areas
-        lw = l * w
-        wh = w * h
-        hl = h * l
-
-        # Calculate the smallest side area
-        smallest_side = min(lw, wh, hl)
-
-        # Calculate total wrapping paper needed for this present
-        wrapping_paper = 2 * lw + 2 * wh + 2 * hl + smallest_side
-        total_paper += wrapping_paper
-
-        # Calculate the smallest perimeter
-        smallest_perimeter = min(2 * (l + w), 2 * (w + h), 2 * (h + l))
-
-        # Calculate the volume (for the bow)
-        volume = l * w * h
-
-        # Calculate total ribbon needed for this present
-        ribbon = smallest_perimeter + volume
-        total_ribbon += ribbon
-
-    return total_paper, total_ribbon
+def read_input_file(file_name: str) -> str:
+    with open(file_name) as f:
+        return f.read().strip()
 
 
-# Example usage
-present_dimensions = ["2x3x4", "1x1x10"]
-total_paper_needed, total_ribbon_needed = calculate_wrapping_paper_and_ribbon(present_dimensions)
-print(f"Total wrapping paper needed: {total_paper_needed} square feet")  # Output: 101
-print(f"Total ribbon needed: {total_ribbon_needed} feet")  # Output: 48
+def move_(direction: str, location: tuple[int, int]) -> tuple[int, int]:
+    directions = {'<': (-1, 0), '>': (1, 0), '^': (0, -1), 'v': (0, 1)}
+    dx, dy = directions[direction]
+    return location[0] + dx, location[1] + dy
+
+
+def compute_locations(moves: str, is_part_two: bool = False) -> int:
+    location_santa = location_robo_santa = (0, 0)
+    locations = {(0, 0)}
+
+    for idx, move in enumerate(moves):
+        if is_part_two and idx % 2 == 1:
+            location_robo_santa = move_(move, location_robo_santa)
+            locations.add(location_robo_santa)
+        else:
+            location_santa = move_(move, location_santa)
+            locations.add(location_santa)
+
+    return len(locations)
+
+
+if __name__ == '__main__':
+    moves = read_input_file('input/input3.txt')
+    print(f"Part I: {compute_locations(moves)}")
+    print(f"Part II: {compute_locations(moves, is_part_two=True)}")

@@ -1,8 +1,8 @@
 def read_input_file(file_name: str) -> str:
     with open(file_name) as f:
-        content = f.read().splitlines()
+        content = f.read()
 
-    return content[0]
+    return content
 
 
 def compute_part_one(file_name: str) -> int:
