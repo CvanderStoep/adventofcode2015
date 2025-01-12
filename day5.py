@@ -30,16 +30,9 @@ def is_string_nice(string: str) -> bool:
         return False
 
     count = count_vowels(string)
-    if count < 3:
-        return False
-
-    if not has_consecutive_identical_letters(string):
-        return False
-
-    if has_specific_pattern(string):
-        return False
-
-    return True
+    if (count >= 3) and not has_specific_pattern(string) and has_consecutive_identical_letters(string):
+        return True
+    return False
 
 
 def is_string_nice_two(string: str) -> bool:
@@ -56,13 +49,9 @@ def is_string_nice_two(string: str) -> bool:
                 return True
         return False
 
-    if not has_repeating_pair(string):
-        return False
-
-    if not has_repeating_letter_with_one_between(string):
-        return False
-
-    return True
+    if has_repeating_pair(string) and has_repeating_letter_with_one_between(string):
+        return True
+    return False
 
 
 def compute_part(file_name: str, function) -> int:
