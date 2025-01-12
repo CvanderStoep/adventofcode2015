@@ -1,30 +1,19 @@
-def read_input_file(file_name: str) -> str:
-    with open(file_name) as f:
-        return f.read().strip()
-
-
-def move_(direction: str, location: tuple[int, int]) -> tuple[int, int]:
-    directions = {'<': (-1, 0), '>': (1, 0), '^': (0, -1), 'v': (0, 1)}
-    dx, dy = directions[direction]
-    return location[0] + dx, location[1] + dy
-
-
-def compute_locations(moves: str, is_part_two: bool = False) -> int:
-    location_santa = location_robo_santa = (0, 0)
-    locations = {(0, 0)}
-
-    for idx, move in enumerate(moves):
-        if is_part_two and idx % 2 == 1:
-            location_robo_santa = move_(move, location_robo_santa)
-            locations.add(location_robo_santa)
+def count_non_overlapping_combinations(s):
+    combinations = {}
+    i = 0
+    while i < len(s) - 1:
+        if s[i] == s[i + 1]:
+            combination = s[i] * 2
+            if combination in combinations:
+                combinations[combination] += 1
+            else:
+                combinations[combination] = 1
+            i += 2  # Skip the next character to prevent overlap
         else:
-            location_santa = move_(move, location_santa)
-            locations.add(location_santa)
+            i += 1
+    return combinations
 
-    return len(locations)
-
-
-if __name__ == '__main__':
-    moves = read_input_file('input/input3.txt')
-    print(f"Part I: {compute_locations(moves)}")
-    print(f"Part II: {compute_locations(moves, is_part_two=True)}")
+# Example usage
+input_string = "aaaabbbcccaaa"
+result = count_non_overlapping_combinations(input_string)
+print("Non-overlapping combination counts:", result)

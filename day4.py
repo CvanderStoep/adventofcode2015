@@ -19,7 +19,7 @@ def compute_md5_hash(input_string):
     return md5_hash.hexdigest()
 
 
-def compute_part_one(file_name: str, number_of_leading_zeros=5) -> int:
+def compute_part_one(file_name: str, number_of_leading_zeros: int = 5) -> int:
     content = read_input_file(file_name)
     secret_key = 1
     zeros = '0' * number_of_leading_zeros
