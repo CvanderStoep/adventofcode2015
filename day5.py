@@ -65,26 +65,16 @@ def is_string_nice_two(string: str) -> bool:
     return True
 
 
-def compute_part_one(file_name: str) -> int:
+def compute_part(file_name: str, function) -> int:
     content = read_input_file(file_name)
     number_of_nice_strings = 0
     for string in content:
-        if is_string_nice(string):
-            number_of_nice_strings += 1
-
-    return number_of_nice_strings
-
-
-def compute_part_two(file_name: str) -> int:
-    content = read_input_file(file_name)
-    number_of_nice_strings = 0
-    for string in content:
-        if is_string_nice_two(string):
+        if function(string):
             number_of_nice_strings += 1
 
     return number_of_nice_strings
 
 
 if __name__ == '__main__':
-    print(f"Part I: {compute_part_one('input/input5.txt')}")
-    print(f"Part II: {compute_part_two('input/input5.txt')}")
+    print(f"Part I: {compute_part('input/input5.txt', is_string_nice)}")
+    print(f"Part II: {compute_part('input/input5.txt', is_string_nice_two)}")
