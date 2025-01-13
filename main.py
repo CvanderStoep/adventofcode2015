@@ -1,9 +1,7 @@
 import numpy as np
+# Create a 1000x1000 array with random integers
+large_grid = np.random.randint(0, 100, (1000, 1000))
 
-# Create a sample 2D array
-grid = np.zeros((15,8))
+# Print the array
+print(large_grid)
 
-grid[2:5+1, 4:8] = 2
-
-
-print(grid)
