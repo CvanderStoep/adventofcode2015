@@ -68,7 +68,6 @@ def build_circuit(circuit: dict, wire: str):
         value = op1 << op2
     elif operation[1] == 'RSHIFT':
         value = op1 >> op2
-
     circuit[wire] = value
     return value
 
