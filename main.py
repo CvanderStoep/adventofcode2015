@@ -1,23 +1,25 @@
-import time
+def contains_two_different_pairs(s):
+    pairs = set()
+    i = 0
+    while i < len(s) - 1:
+        if s[i] == s[i + 1]:
+            pairs.add(s[i])
+            i += 2  # Move past the current pair
+        else:
+            i += 1
 
-# Using `+=`
-start_time = time.time()
-string = ""
-for i in range(100000):
-    string += "newstring"
-print("Using +=:", time.time() - start_time)
+    return len(pairs) >= 2
 
-# Using `+`
-start_time = time.time()
-string = ""
-for i in range(100000):
-    string = string + "newstring"
-print("Using +:", time.time() - start_time)
 
-# Using `.join()`
-start_time = time.time()
-string_list = []
-for _ in range(100000):
-    string_list.append("newstring")
-string = "".join(string_list)
-print("Using join:", time.time() - start_time)
+# Example usage:
+example_string = "aabb"
+result = contains_two_different_pairs(example_string)
+print(result)  # Output: True
+
+example_string = "abcde"
+result = contains_two_different_pairs(example_string)
+print(result)  # Output: False
+
+example_string = "bookkeeper"
+result = contains_two_different_pairs(example_string)
+print(result)  # Output: True
