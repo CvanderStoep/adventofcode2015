@@ -1,25 +1,27 @@
-def contains_two_different_pairs(s):
-    pairs = set()
-    i = 0
-    while i < len(s) - 1:
-        if s[i] == s[i + 1]:
-            pairs.add(s[i])
-            i += 2  # Move past the current pair
-        else:
-            i += 1
+def recursive_sum(data):
+    total = 0
+    if isinstance(data, dict):
+        for value in data.values():
+            total += recursive_sum(value)
+    elif isinstance(data, list):
+        for item in data:
+            total += recursive_sum(item)
+    elif isinstance(data, (int, float)):  # Check for numeric values
+        total += data
+    return total
 
-    return len(pairs) >= 2
+# Example dictionary with nested structures
+nested_dict = {
+    'a': 1,
+    'b': {
+        'c': 2,
+        'd': {
+            'e': 3,
+            'f': [4, 5, 6]
+        }
+    }
+}
 
-
-# Example usage:
-example_string = "aabb"
-result = contains_two_different_pairs(example_string)
-print(result)  # Output: True
-
-example_string = "abcde"
-result = contains_two_different_pairs(example_string)
-print(result)  # Output: False
-
-example_string = "bookkeeper"
-result = contains_two_different_pairs(example_string)
-print(result)  # Output: True
+# Calculating the sum of all values
+result = recursive_sum(nested_dict)
+print(f'The sum of all values is: {result}')
