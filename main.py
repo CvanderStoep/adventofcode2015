@@ -1,16 +1,29 @@
-# Day 12: JSAbacusFramework.io
-# https://adventofcode.com/2015/day/12
+from dataclasses import dataclass
 
 
-def dfs(obj):
-    if isinstance(obj, int):
-        return obj, obj
-    if isinstance(obj, list) and obj:
-        return (sum(s) for s in zip(*[dfs(x) for x in obj]))
-    if isinstance(obj, dict) and obj:
-        v = [sum(s) for s in zip(*[dfs(x) for x in obj.values()])]
-        return v[0], 0 if "red" in obj.values() else v[1]
-    return 0, 0
+@dataclass
+class Reindeer:
+    name: str
+    speed: int
+    fly_time: int
+    rest_time: int
 
-i = '[1,{"c":"red","b":2},3]'
-print(*(dfs(eval(i))), sep="\n")
+
+def parse_reindeers(content):
+    reindeers = []
+
+    for line in content:
+        # Splitting the line by whitespace
+        parts = line.split()
+
+        # Extracting relevant data
+        name = parts[0]
+        speed = int(parts[3])
+        fly_time = int(parts[6])
+        rest_time = int(parts[13])
+
+        # Creating a Reindeer object and adding it to the list
+        reindeer = Reindeer(name, speed, fly_time, rest_time)
+        reindeers.append(reindeer)
+
+    return reindeers
