@@ -1,27 +1,16 @@
-def recursive_sum(data):
-    total = 0
-    if isinstance(data, dict):
-        for value in data.values():
-            total += recursive_sum(value)
-    elif isinstance(data, list):
-        for item in data:
-            total += recursive_sum(item)
-    elif isinstance(data, (int, float)):  # Check for numeric values
-        total += data
-    return total
+# Day 12: JSAbacusFramework.io
+# https://adventofcode.com/2015/day/12
 
-# Example dictionary with nested structures
-nested_dict = {
-    'a': 1,
-    'b': {
-        'c': 2,
-        'd': {
-            'e': 3,
-            'f': [4, 5, 6]
-        }
-    }
-}
 
-# Calculating the sum of all values
-result = recursive_sum(nested_dict)
-print(f'The sum of all values is: {result}')
+def dfs(obj):
+    if isinstance(obj, int):
+        return obj, obj
+    if isinstance(obj, list) and obj:
+        return (sum(s) for s in zip(*[dfs(x) for x in obj]))
+    if isinstance(obj, dict) and obj:
+        v = [sum(s) for s in zip(*[dfs(x) for x in obj.values()])]
+        return v[0], 0 if "red" in obj.values() else v[1]
+    return 0, 0
+
+i = '[1,{"c":"red","b":2},3]'
+print(*(dfs(eval(i))), sep="\n")

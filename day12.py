@@ -43,6 +43,7 @@ def compute_part_one(file_name: str) -> int:
 
 def compute_part_two(file_name: str) -> int:
     content = read_input_file_json(file_name)
+    # content = eval(read_input_file(file_name))  # alternative read without needing json module
 
     sum_of_numbers_without_red = recursive_sum(content)
     print(f'{sum_of_numbers_without_red= }')
