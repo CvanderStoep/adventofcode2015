@@ -50,10 +50,8 @@ def compute_part_one(file_name: str) -> int:
     reindeers = read_input_file(file_name)
     max_distance = 0
     for reindeer in reindeers:
-        # name, speed, time, rest = reindeer
         distance = calculate_distance_travelled(reindeer.speed, reindeer.fly_time, reindeer.rest_time, 2503)
         max_distance = max(max_distance, distance)
-        # print(reindeer.name, distance)
     print(f'{max_distance= }')
 
     return max_distance

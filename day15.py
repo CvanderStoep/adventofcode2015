@@ -1,3 +1,7 @@
+# z3 solver, pip install z3-solver
+# dataclass
+# optimize, constraints
+
 import re
 from z3 import *
 from dataclasses import dataclass
@@ -41,35 +45,30 @@ def compute_part(file_name: str, part=1) -> int:
 
     n = len(ingredients)
     s = Solver()
-
-    teaspoons = [Int(f'ts{i}') for i in range(n)]
+    teaspoons = [Int(f'ts{i}') for i in range(0, n)]
+    # print(teaspoons)
     for ts in teaspoons:
         s.add(ts >= 0)
+        # s.add(ts <= 100)
     s.add(sum(teaspoons) == 100)
 
-    # Initialize properties to zero
-    capacity = durability = flavor = texture = calories = 0
+    capacity = 0
+    durability = 0
+    flavor = 0
+    texture = 0
+    calories = 0
 
-    # Cache for computed values to avoid redundant calculations
-    computed_cache = {}
+    # capacity = sum(teaspoons[i] * ingredients[i].capacity for i in range(n))
+    # durability = sum(teaspoons[i] * ingredients[i].durability for i in range(n))
+    # flavor = sum(teaspoons[i] * ingredients[i].flavor for i in range(n))
+    # texture = sum(teaspoons[i] * ingredients[i].texture for i in range(n))
 
-    def get_property_value(teaspoons, property_name):
-        # Create a tuple key for the cache
-        cache_key = (tuple(teaspoons), property_name)
-        if cache_key in computed_cache:
-            return computed_cache[cache_key]
-
-        # Compute property value if not in cache
-        value = sum(teaspoons[i] * getattr(ingredients[i], property_name) for i in range(n))
-        computed_cache[cache_key] = value
-        return value
-
-    # Compute total properties using the cache
-    capacity = get_property_value(teaspoons, 'capacity')
-    durability = get_property_value(teaspoons, 'durability')
-    flavor = get_property_value(teaspoons, 'flavor')
-    texture = get_property_value(teaspoons, 'texture')
-    calories = get_property_value(teaspoons, 'calories')
+    for i in range(n):
+        capacity += teaspoons[i] * ingredients[i].capacity
+        durability += teaspoons[i] * ingredients[i].durability
+        flavor += teaspoons[i] * ingredients[i].flavor
+        texture += teaspoons[i] * ingredients[i].texture
+        calories += teaspoons[i] * ingredients[i].calories
 
     if part == 2:
         s.add(calories == 500)
@@ -81,20 +80,26 @@ def compute_part(file_name: str, part=1) -> int:
 
     objective = capacity * durability * flavor * texture
 
+    # print(objective)
     optimize = Optimize()
     optimize.add(s.assertions())
     optimize.maximize(objective)
 
+    # print(s)
     if optimize.check() == sat:
         model = optimize.model()
+        # print(model)
         max_value = model.evaluate(objective)
+        capacity_value = model.evaluate(capacity)
         print(f"Maximum value: {max_value}")
+        # print(f"Capacity value: {capacity_value}")
         for v in teaspoons:
             print(f"{v} = {model.evaluate(v)}")
     else:
         print("No solution found")
 
     return max_value
+
 
 if __name__ == '__main__':
     print(f"Part I: {compute_part('input/input15.txt', part=1)}")
