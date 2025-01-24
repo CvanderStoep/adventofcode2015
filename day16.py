@@ -40,6 +40,7 @@ def read_input_file(file_name: str) -> list:
 
     return aunts
 
+
 # for aunt in aunts:
 #     properties = [
 #         (aunt.children, 3),
@@ -78,8 +79,22 @@ def compute_part_one(file_name: str) -> int:
 
 
 def compute_part_two(file_name: str) -> int:
-    content = read_input_file(file_name)
-    return "part 2 not yet implemented"
+    aunts = read_input_file(file_name)
+    print(aunts)
+    for aunt in aunts:
+        if (aunt.children == 3 or aunt.children is None) and \
+                (aunt.cats is None or aunt.cats > 7) and \
+                (aunt.samoyeds == 2 or aunt.samoyeds is None) and \
+                (aunt.pomeranians is None or aunt.pomeranians < 3) and \
+                (aunt.akitas == 0 or aunt.akitas is None) and \
+                (aunt.vizslas == 0 or aunt.vizslas is None) and \
+                (aunt.goldfish is None or aunt.goldfish < 5) and \
+                (aunt.trees is None or aunt.trees > 3) and \
+                (aunt.cars == 2 or aunt.cars is None) and \
+                (aunt.perfumes == 1 or aunt.perfumes is None):
+            return aunt.number
+
+    return "no solution found"
 
 
 if __name__ == '__main__':
