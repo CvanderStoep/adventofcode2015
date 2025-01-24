@@ -39,14 +39,13 @@ def read_input_file(file_name: str) -> list:
     return ingredients
 
 
-def compute_part(file_name: str, part=1) -> int:
+def compute_part(file_name: str, part=1) -> str:
     ingredients = read_input_file(file_name)
     print(ingredients)
 
     n = len(ingredients)
     s = Solver()
     teaspoons = [Int(f'ts{i}') for i in range(0, n)]
-    # print(teaspoons)
     for ts in teaspoons:
         s.add(ts >= 0)
         # s.add(ts <= 100)
@@ -58,17 +57,15 @@ def compute_part(file_name: str, part=1) -> int:
     texture = 0
     calories = 0
 
-    # capacity = sum(teaspoons[i] * ingredients[i].capacity for i in range(n))
-    # durability = sum(teaspoons[i] * ingredients[i].durability for i in range(n))
-    # flavor = sum(teaspoons[i] * ingredients[i].flavor for i in range(n))
-    # texture = sum(teaspoons[i] * ingredients[i].texture for i in range(n))
-
     for i in range(n):
         capacity += teaspoons[i] * ingredients[i].capacity
         durability += teaspoons[i] * ingredients[i].durability
         flavor += teaspoons[i] * ingredients[i].flavor
         texture += teaspoons[i] * ingredients[i].texture
         calories += teaspoons[i] * ingredients[i].calories
+
+    # alternative, shorter functional
+    # capacity = sum(teaspoons[i] * ingredients[i].capacity for i in range(n))
 
     if part == 2:
         s.add(calories == 500)
@@ -80,27 +77,21 @@ def compute_part(file_name: str, part=1) -> int:
 
     objective = capacity * durability * flavor * texture
 
-    # print(objective)
     optimize = Optimize()
     optimize.add(s.assertions())
     optimize.maximize(objective)
 
-    # print(s)
     if optimize.check() == sat:
         model = optimize.model()
-        # print(model)
         max_value = model.evaluate(objective)
-        capacity_value = model.evaluate(capacity)
-        print(f"Maximum value: {max_value}")
-        # print(f"Capacity value: {capacity_value}")
-        for v in teaspoons:
-            print(f"{v} = {model.evaluate(v)}")
+        print(model)
+        for ts in teaspoons:
+            print(f"{ts} = {model.evaluate(ts)}")
+        return f"Maximum value: {max_value}"
     else:
-        print("No solution found")
-
-    return max_value
+        return "No solution found"
 
 
 if __name__ == '__main__':
-    print(f"Part I: {compute_part('input/input15.txt', part=1)}")
+    # print(f"Part I: {compute_part('input/input15.txt', part=1)}")
     print(f"Part II: {compute_part('input/input15.txt', part=2)}")
