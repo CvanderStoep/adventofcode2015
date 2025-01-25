@@ -1,22 +1,37 @@
-from dataclasses import dataclass
+def fill_container(containers: list, liters: int) -> list:
+    def find_combinations(containers, target, current_combination=None, all_combinations=None):
+        if current_combination is None:
+            current_combination = []
+        if all_combinations is None:
+            all_combinations = []
 
-@dataclass
-class Ingredient:
-    capacity: int
-    durability: int
-    flavor: int
-    texture: int
-    calories: int
+        if target == 0:
+            all_combinations.append(current_combination.copy())
+            return all_combinations
 
-# Example instance of the dataclass
-ingredient = Ingredient(capacity=0, durability=0, flavor=0, texture=0, calories=0)
+        if target < 0 or not containers:
+            return all_combinations
 
-# Property name stored in a string variable
-property_name = 'flavor'
-property_value = 10
+        for i in range(len(containers)):
+            current_combination.append(containers[i])
+            find_combinations(containers[i+1:], target - containers[i], current_combination, all_combinations)
+            current_combination.pop()
 
-# Using setattr to assign a value to the property
-setattr(ingredient, property_name, property_value)
+        return all_combinations
 
-# Print the updated dataclass instance
-print(ingredient)
+    return find_combinations(containers, liters)
+
+# Example usage
+containers = [20, 15, 10, 5, 5]
+liters = 25
+
+# Find all combinations
+combinations_found = fill_container(containers, liters)
+
+# Print the combinations found
+print("Combinations:")
+for combo in combinations_found:
+    print(combo)
+
+# Output the number of combinations found
+print(f"Total combinations: {len(combinations_found)}")
