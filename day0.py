@@ -1,3 +1,5 @@
+# https://github.com/godarderik/adventofcode/blob/master/2015/problem2.py
+
 def read_input_file(file_name: str) -> list:
     with open(file_name) as f:
         content = f.read().splitlines()

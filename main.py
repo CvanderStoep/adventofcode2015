@@ -1,37 +1,50 @@
-def fill_container(containers: list, liters: int) -> list:
-    def find_combinations(containers, target, current_combination=None, all_combinations=None):
-        if current_combination is None:
-            current_combination = []
-        if all_combinations is None:
-            all_combinations = []
+def get_grid(grid, i, j):
+    # Assume this function returns the value at grid[i][j] if within bounds, else returns "."
+    if 0 <= i < len(grid) and 0 <= j < len(grid[0]):
+        return grid[i][j]
+    return "."
 
-        if target == 0:
-            all_combinations.append(current_combination.copy())
-            return all_combinations
+def update_cell(grid, i, j):
+    directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+    number_on_neighbours = 0
 
-        if target < 0 or not containers:
-            return all_combinations
+    for direction in directions:
+        di, dj = direction
+        if get_grid(grid, i + di, j + dj) == "#":
+            number_on_neighbours += 1
 
-        for i in range(len(containers)):
-            current_combination.append(containers[i])
-            find_combinations(containers[i+1:], target - containers[i], current_combination, all_combinations)
-            current_combination.pop()
+    if get_grid(grid, i, j) == "#":
+        if 2 <= number_on_neighbours <= 3:
+            light = "#"
+        else:
+            light = "."
+    else:
+        if number_on_neighbours == 3:
+            light = "#"
+        else:
+            light = '.'
 
-        return all_combinations
+    return light
 
-    return find_combinations(containers, liters)
+def update_grid(grid):
+    new_grid = []
+    for i in range(len(grid)):
+        new_row = []
+        for j in range(len(grid[0])):
+            new_row.append(update_cell(grid, i, j))
+        new_grid.append(new_row)
+    return new_grid
 
 # Example usage
-containers = [20, 15, 10, 5, 5]
-liters = 25
+grid = [
+    [".", "#", "."],
+    ["#", "#", "#"],
+    [".", "#", "."]
+]
 
-# Find all combinations
-combinations_found = fill_container(containers, liters)
+# Update the grid
+new_grid = update_grid(grid)
 
-# Print the combinations found
-print("Combinations:")
-for combo in combinations_found:
-    print(combo)
-
-# Output the number of combinations found
-print(f"Total combinations: {len(combinations_found)}")
+# Print the updated grid
+for row in new_grid:
+    print("".join(row))

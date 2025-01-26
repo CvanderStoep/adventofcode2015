@@ -1,3 +1,9 @@
+# making change problem with containers
+# recursive, all combinations, minimum only
+# with and without memoization
+import time
+
+
 def read_input_file(file_name: str) -> list:
     with open(file_name) as f:
         content = f.read().splitlines()
@@ -29,6 +35,27 @@ def fill_container_all_combinations(containers: list, liters: int) -> list:
         return all_combinations
 
     return find_combinations(containers, liters)
+
+
+def fill_container_memo(containers: list, liters: int, memo=None) -> int:
+    if memo is None:
+        memo = {}
+
+    key = (tuple(containers), liters)
+    if key in memo:
+        return memo[key]
+
+    total = 0
+    if liters < 0:
+        return 0
+    if liters == 0:
+        total += 1
+    elif len(containers) != 0:
+        total = total + fill_container_memo(containers[1:], liters - containers[0], memo) + \
+                fill_container_memo(containers[1:], liters, memo)
+
+    memo[key] = total
+    return total
 
 
 def fill_container(containers: list, liters: int) -> int:
@@ -76,10 +103,19 @@ def compute_part_one(file_name: str) -> int:
     return number_of_ways
 
 
+def compute_part_one_memo(file_name: str) -> int:
+    containers = read_input_file(file_name)
+    print(containers)
+    number_of_ways = fill_container_memo(containers, 150)
+    print(f'{number_of_ways= }')
+
+    return number_of_ways
+
+
 def compute_part_two(file_name: str) -> int:
     containers = read_input_file(file_name)
     combinations = fill_container_all_combinations(containers, 150)
-    minimum_amount = 1000
+    minimum_amount = float('inf')
     for combo in combinations:
         minimum_amount = min(minimum_amount, len(combo))
     total_different_minimum_ways = 0
@@ -92,5 +128,14 @@ def compute_part_two(file_name: str) -> int:
 
 
 if __name__ == '__main__':
+    start_time = time.time()
     print(f"Part I: {compute_part_one('input/input17.txt')}")
+    print("Elapsed time:", time.time() - start_time)
+
+    start_time = time.time()
+    print(f"Part I: {compute_part_one_memo('input/input17.txt')}")
+    print("Elapsed time:", time.time() - start_time)
+
+    start_time = time.time()
     print(f"Part II: {compute_part_two('input/input17.txt')}")
+    print("Elapsed time:", time.time() - start_time)
