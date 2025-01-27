@@ -9,7 +9,7 @@ def read_input_file(file_name: str) -> list:
     return grid
 
 
-def get_grid(grid: list, i: int, j: int) -> str:
+def get_grid_value(grid: list, i: int, j: int) -> str:
     # i --> : rows, j: columns
 
     if (0 <= i < len(grid[0])) and (0 <= j < len(grid[0])):
@@ -28,10 +28,10 @@ def update_cell(grid: list, i: int, j: int, part: int = 1) -> str:
     number_on_neighbours = 0
     for direction in directions:
         di, dj = direction
-        if get_grid(grid, i + di, j + dj) == "#":
+        if get_grid_value(grid, i + di, j + dj) == "#":
             number_on_neighbours += 1
 
-    if get_grid(grid, i, j) == "#":
+    if get_grid_value(grid, i, j) == "#":
         if 2 <= number_on_neighbours <= 3:
             light = "#"
         else:
@@ -70,8 +70,6 @@ def compute_part(file_name: str, part=1) -> int:
     print(grid)
     for i in range(1, 101):
         grid = update_grid(grid, part)
-        # print(f'After {i} steps:')
-        # print(grid)
     number_of_lights = light_count(grid)
     print(f'{light_count(grid)= }')
 
