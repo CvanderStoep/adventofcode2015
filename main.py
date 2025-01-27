@@ -1,33 +1,30 @@
-transitions = {}
+from collections import defaultdict
+import sympy
 
-reading_transitions = True
-for line in sys.stdin:
-    line = line.strip()
+def compute_part_two(file_name: str) -> int:
+    required_presents = read_input_file(file_name)
+    print(required_presents)
 
-    if not line:
-        reading_transitions = False
-    elif reading_transitions:
-        src, dst = line.split(' => ')
-        transitions[dst] = src
-    else:
-        target = line
+    elf_visits = defaultdict(int)
+    house = 1
 
-def build_iter(input):
-    for dst in transitions:
-        src = transitions[dst]
-        for match in re.finditer(dst, input):
-            yield input[:match.start()] + src + input[match.end():]
+    while True:
+        divisors = sympy.divisors(house)
+        presents = 0
+        for elf in divisors:
+            if elf_visits[elf] < 50:
+                elf_visits[elf] += 1
+                presents += elf * 11
 
-q = queue.PriorityQueue()
-q.put((len(target), 0, target))
+        if house % 100000 == 0:
+            print(house, presents)
 
-while True:
-    length, iterations, current = q.get()
+        if presents >= required_presents:
+            print(f'house= {house}')
+            break
 
-    if current == 'e':
-        break
+        house += 1
 
-    for precursor in build_iter(current):
-        q.put((len(precursor), iterations + 1, precursor))
-
-print(iterations)
+# Example usage
+file_name = "input.txt"
+compute_part_two(file_name)
