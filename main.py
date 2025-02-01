@@ -1,30 +1,14 @@
-from collections import defaultdict
-import sympy
+import gc
 
-def compute_part_two(file_name: str) -> int:
-    required_presents = read_input_file(file_name)
-    print(required_presents)
+# Collect all objects
+gc.collect()
 
-    elf_visits = defaultdict(int)
-    house = 1
-
-    while True:
-        divisors = sympy.divisors(house)
-        presents = 0
-        for elf in divisors:
-            if elf_visits[elf] < 50:
-                elf_visits[elf] += 1
-                presents += elf * 11
-
-        if house % 100000 == 0:
-            print(house, presents)
-
-        if presents >= required_presents:
-            print(f'house= {house}')
-            break
-
-        house += 1
+# Filter objects by class type
+def get_objects_by_class(cls):
+    return [obj for obj in gc.get_objects() if isinstance(obj, cls)]
 
 # Example usage
-file_name = "input.txt"
-compute_part_two(file_name)
+weapons_in_memory = get_objects_by_class(Item)
+
+for weapon in weapons_in_memory:
+    print(weapon)
