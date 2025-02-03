@@ -1,5 +1,5 @@
 # https://github.com/r-sreeram/adventofcode/blob/main/2015/2015-9.py
-# python github9.py input\input9.txt
+# python day9-github.py input\input9.txt
 
 # Day 9: All in a Single Night
 # https://adventofcode.com/2015/day/9
@@ -21,20 +21,6 @@ import collections, itertools as it
 import sys
 
 distance = collections.defaultdict(dict)
-# # for line in open(0):
-# for line in sys.argv[1]:
-#     src, _, dst, _, cost = line.split()
-#     distance[src][dst] = distance[dst][src] = int(cost)
-# print(distance)
-# paths = [sum(distance[src][dst] for src, dst in it.pairwise(perm)) for perm in it.permutations(distance.keys())]
-# print(min(paths), max(paths), sep="\n")
-
-import sys
-
-# Check if a filename is provided
-# if len(sys.argv) != 2:
-#     print("Usage: python script.py <inputfile>")
-#     sys.exit(1)
 
 # Open the file and read lines
 with open('input\input9.txt', 'r') as file:  # sys.argv[1]
