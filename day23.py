@@ -7,74 +7,66 @@ def read_input_file(file_name: str) -> list:
     return content
 
 
-def process_instruction(a: int, b: int, position: int, instruction: str) -> (int, int, int):
+def process_instruction(registers: dict, position: int, instruction: str) -> (int, int, int):
     pattern = r'-?\d+'
     if 'hlf' in instruction:
-        if instruction[-1] == 'a':
-            a = a // 2
-        else:
-            b = b // 2
+        register_name = instruction[-1]
+        registers[register_name] = registers[register_name] // 2
         position += 1
     if 'tpl' in instruction:
-        if instruction[-1] == 'a':
-            a = a * 3
-        else:
-            b = b * 3
+        register_name = instruction[-1]
+        registers[register_name] *= 3
         position += 1
     if 'inc' in instruction:
-        if instruction[-1] == 'a':
-            a += 1
-        else:
-            b += 1
+        register_name = instruction[-1]
+        registers[register_name] += 1
         position += 1
     if 'jmp' in instruction:
         jump = int(re.findall(pattern, instruction)[0])
         position += jump
     if 'jie' in instruction:
-        if instruction[4] == 'a':
-            r = a
-        else:
-            r = b
+        register_name = instruction[4]
+        r = registers[register_name]
         if r % 2 == 0:
             jump = int(re.findall(pattern, instruction)[0])
             position += jump
         else:
             position += 1
     if 'jio' in instruction:
-        if instruction[4] == 'a':
-            r = a
-        else:
-            r = b
+        register_name = instruction[4]
+        r = registers[register_name]
         if r == 1:
             jump = int(re.findall(pattern, instruction)[0])
             position += jump
         else:
             position += 1
 
-    return a, b, position
+    return registers, position
 
 
 def compute_part_one(file_name: str) -> int:
+    registers = {'a': 0, 'b': 0}
     instructions = read_input_file(file_name)
     print(instructions)
-    a, b, position = 0, 0, 0
+    position = 0
 
     while position < len(instructions):
         instruction = instructions[position]
-        a, b, position = process_instruction(a, b, position, instruction)
+        registers, position = process_instruction(registers, position, instruction)
 
-    return b
+    return registers['b']
 
 
 def compute_part_two(file_name: str) -> int:
+    registers = {'a': 1, 'b': 0}
     instructions = read_input_file(file_name)
-    a, b, position = 1, 0, 0
+    position = 0
 
     while position < len(instructions):
         instruction = instructions[position]
-        a, b, position = process_instruction(a, b, position, instruction)
+        registers, position = process_instruction(registers, position, instruction)
 
-    return b
+    return registers['b']
 
 
 if __name__ == '__main__':
